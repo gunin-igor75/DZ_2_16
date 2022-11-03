@@ -5,7 +5,6 @@ import org.junit.jupiter.api.Test;
 import pro.sky.exeption.InvalidateIndexException;
 import pro.sky.exeption.NotFoundElementException;
 import pro.sky.exeption.NullItemException;
-import pro.sky.exeption.StorageFullException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
@@ -13,6 +12,7 @@ import static pro.sky.Value.*;
 
 class IntegerListImplTest {
     private IntegerListImpl LIST;
+
     @BeforeEach
     void post() {
         LIST = new IntegerListImpl(5);
@@ -23,8 +23,7 @@ class IntegerListImplTest {
 
     @Test
     void addTestOne() {
-        assertAll(() -> assertThrows(StorageFullException.class,
-                () -> LIST_FULL.add(ZERO)),
+        assertAll(() -> assertEquals(ZERO, LIST_FULL.add(ZERO)),
                 () -> assertThrows(NullItemException.class,
                         () -> LIST.add(null)),
                 () -> assertEquals(SIX, LIST.add(SIX)));
@@ -32,20 +31,19 @@ class IntegerListImplTest {
 
     @Test
     void addTestTwo() {
-        assertAll(() -> assertThrows(StorageFullException.class,
-                        () -> LIST_FULL.add(ZERO,SIX)),
+        assertAll(() -> assertEquals(ZERO, LIST_FULL.add(ZERO)),
                 () -> assertThrows(NullItemException.class,
                         () -> LIST.add(ONE, null)),
                 () -> assertEquals(SIX, LIST.add(TWO, SIX)),
                 () -> assertThrows(InvalidateIndexException.class,
-                        () -> LIST.add(TEN,ONE)),
-                () -> assertEquals(THREE, LIST.add(ZERO,THREE)));
+                        () -> LIST.add(TEN, ONE)),
+                () -> assertEquals(THREE, LIST.add(ZERO, THREE)));
     }
 
     @Test
     void setTest() {
         assertAll(() -> assertThrows(InvalidateIndexException.class,
-                () -> LIST.set(TEN, ZERO)),
+                        () -> LIST.set(TEN, ZERO)),
                 () -> assertThrows(NullItemException.class,
                         () -> LIST.set(TWO, null)),
                 () -> assertEquals(ZERO, LIST.set(TWO, ZERO)));
@@ -55,9 +53,9 @@ class IntegerListImplTest {
     void removeOne() {
         assertAll(() -> assertEquals(ONE, LIST.remove(ONE)),
                 () -> assertThrows(NullItemException.class,
-                        () ->LIST.remove(null)),
+                        () -> LIST.remove(null)),
                 () -> assertThrows(NotFoundElementException.class,
-                        () ->LIST.remove(SIX))
+                        () -> LIST.remove(SIX))
         );
     }
 
@@ -84,6 +82,7 @@ class IntegerListImplTest {
                 () -> assertEquals(ONE, LIST.indexOf(TWO)),
                 () -> assertEquals(MINUS_ONE, LIST.indexOf(SIX)));
     }
+
     @Test
     void lastIndexOfTest() {
         LIST.add(TWO);
@@ -92,9 +91,10 @@ class IntegerListImplTest {
                 () -> assertEquals(THREE, LIST.lastIndexOf(TWO)),
                 () -> assertEquals(MINUS_ONE, LIST.lastIndexOf(SIX)));
     }
+
     @Test
     void getTest() {
-        assertAll(() ->assertEquals(ONE, LIST.get(ZERO)),
+        assertAll(() -> assertEquals(ONE, LIST.get(ZERO)),
                 () -> assertThrows(InvalidateIndexException.class,
                         () -> LIST.get(SIX)));
     }
@@ -107,6 +107,7 @@ class IntegerListImplTest {
         listNew.add(5);
         assertTrue(listNew.equals(LIST));
     }
+
     @Test
     void sizeTest() {
         assertAll(() -> assertEquals(THREE, LIST.size()),
@@ -129,6 +130,7 @@ class IntegerListImplTest {
     void toArrayTest() {
         assertThat(ARRAY).contains(LIST.toArray());
     }
+
     @Test
     void binarySearchTest() {
         assertAll(() -> assertTrue(LIST.binarySearch(FIVE)),

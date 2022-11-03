@@ -4,6 +4,20 @@ import java.util.Arrays;
 import java.util.Random;
 
 public class Main {
+    private static Integer[] generate() {
+        Random random = new Random();
+        Integer[] arr = new Integer[15];
+        for (int i = 0; i < arr.length; i++) {
+            arr[i] += random.nextInt(100);
+        }
+        return arr;
+    }
+
+    private static void swapElements(Integer[] arr, int left, int right) {
+        int temp = arr[left];
+        arr[left] = arr[right];
+        arr[right] = temp;
+    }
 
     private Integer[] arr = generateRandomArray();
 
@@ -27,12 +41,17 @@ public class Main {
         long finish = System.currentTimeMillis();
         return finish - begin;
     }
+
     private void run() {
-        System.out.println("Ğ’Ñ€ĞµĞ¼Ñ ÑĞ¾Ñ€Ñ‚Ğ¸Ñ€Ğ¾Ğ²ĞºĞ¸ Ğ²ÑÑ‚Ğ°Ğ²ĞºĞ¾Ğ¹ "
+        System.out.println("Âğåìÿ áû÷òğîé ñîğòèğîâêè "
+                + getTime(new SortQuick()));
+        System.out.println("Âğåìÿ ñîğòèğîâêè ñëèÿíèåì "
+                + getTime(new MergeSort()));
+        System.out.println("Âğåìÿ ñîğòèğîâêè âñòàâêîé "
                 + getTime(new SortInsertion()));
-        System.out.println("Ğ’Ñ€ĞµĞ¼Ñ ÑĞ¾Ñ€Ñ‚Ğ¸Ñ€Ğ¾Ğ²ĞºĞ¸ Ğ²Ñ‹Ğ±Ğ¾Ñ€Ğ¾Ğ¼ "
+        System.out.println("Âğåìÿ ñîğòèğîâêè âûáîğîì "
                 + getTime(new SortSelection()));
-        System.out.println("Ğ’Ñ€ĞµĞ¼Ñ ÑĞ¾Ñ€Ñ‚Ğ¸Ñ€Ğ¾Ğ²ĞºĞ¸ Ğ¿ÑƒĞ·Ñ‹Ñ€ÑŒĞºĞ¾Ğ¼ "
+        System.out.println("Âğåìÿ ñîğòèğîâêè ïóçûğüêîì "
                 + getTime(new SortBubble()));
     }
 

@@ -3,7 +3,6 @@ package pro.sky;
 import pro.sky.exeption.InvalidateIndexException;
 import pro.sky.exeption.NotFoundElementException;
 import pro.sky.exeption.NullItemException;
-import pro.sky.exeption.StorageFullException;
 
 import java.util.Arrays;
 
@@ -21,7 +20,9 @@ public class IntegerListImpl implements IntegerList {
 
     @Override
     public int add(Integer item) {
-        validateSizeStorage();
+        if (validateSizeStorage()) {
+            grow();
+        }
         validateItem(item);
         storage[size++] = item;
         return item;
@@ -29,7 +30,9 @@ public class IntegerListImpl implements IntegerList {
 
     @Override
     public int add(int index, Integer item) {
-        validateSizeStorage();
+        if (validateSizeStorage()) {
+            grow();
+        }
         validateItem(item);
         if (index == size) {
             storage[size++] = item;
@@ -76,8 +79,8 @@ public class IntegerListImpl implements IntegerList {
     @Override
     public boolean contains(Integer item) {
         validateItem(item);
-        SortInsertion insertion = new SortInsertion();
-        insertion.run(this.toArray());
+        MergeSort mergeSort = new MergeSort();
+        mergeSort.run(this.toArray());
         return binarySearch(item);
     }
 
@@ -134,16 +137,21 @@ public class IntegerListImpl implements IntegerList {
         return Arrays.copyOf(storage, size);
     }
 
+    private void grow() {
+        int newSize = (3 * storage.length) / 2 + 1;
+        Integer[] newStorage = new Integer[newSize];
+        System.arraycopy(storage,0, newStorage,0,storage.length);
+        storage = newStorage;
+    }
+
     private void validateItem(Integer item) {
         if (item == null) {
             throw new NullItemException();
         }
     }
 
-    private void validateSizeStorage() {
-        if (size == storage.length) {
-            throw new StorageFullException();
-        }
+    private boolean validateSizeStorage() {
+        return size == storage.length;
     }
 
     private void validateIndex(int index) {
